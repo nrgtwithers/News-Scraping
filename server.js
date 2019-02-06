@@ -4,7 +4,12 @@ var mongoose = require("mongoose");
 var logger = require("morgan");
 var axios = require("axios");
 var cheerio = require("cheerio");
-// morgan & body parser?
+
+var app = express();
+
+// Starting our Express app
+// =============================================================
+var PORT = process.env.PORT || 3000;
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
@@ -15,11 +20,6 @@ app.use(express.json());
 
 // Make public a static folder
 app.use(express.static("public"));
-
-// Starting our Express app
-// =============================================================
-var app = express();
-var PORT = process.env.PORT || 3000;
 
 // Sets up Handlebars
 // =============================================================
@@ -40,7 +40,11 @@ mongoose.connect("mongodb://localhost/articlesdb", { useNewUrlParser: true });
 
 // Routes
 // =============================================================
-// Scrape + add data to db
+// Main page
+app.get("/", function(req, res) {
+    res.render("index");
+  });
+// Scrape + add data to db https://www.nytimes.com/
 // GET all articles
 
 // Seeing if Port is listening
