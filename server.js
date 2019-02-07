@@ -47,6 +47,10 @@ app.get("/", function(req, res) {
 // Scrape + add data to db https://www.nytimes.com/
 // GET all articles
 
+app.get("/saved", function(req, res){
+    res.render("saved")
+})
+
 // Seeing if Port is listening
 // =============================================================
 app.listen(PORT, function() {

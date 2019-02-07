@@ -17,6 +17,7 @@ html,body{
 
 .display-4{
     padding-top: 75px;
+    font-family: 'Abril Fatface', cursive !important;
 }
 
 h4{
@@ -32,4 +33,5 @@ a.nav-link{
 .card{
     font-family: 'News Cycle', sans-serif;
     color: black !important;   
+    background-color: grey !important;
 }
