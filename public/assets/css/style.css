@@ -4,6 +4,7 @@
 html,body{
     font-family: 'News Cycle', sans-serif;
     color: black;
+    padding: 5px;
 }
 
 .jumbotron{
