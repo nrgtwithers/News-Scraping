@@ -36,7 +36,7 @@ mongoose.connect("mongodb://localhost/articlesdb", { useNewUrlParser: true });
 // Schema 
 // =============================================================
 // var User = require("./userModel.js");
-// var db = require("./models")
+// var User = require("./userModel.js");
 
 // Routes
 // =============================================================
