@@ -30,7 +30,11 @@ app.set("view engine", "handlebars");
 
 // Mongoose Database
 // =============================================================
-mongoose.connect("mongodb://localhost/articlesdb", { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+
+mongoose.connect(MONGODB_URI);
+
+// mongoose.connect("mongodb://localhost/articlesdb", { useNewUrlParser: true });
 
 
 // Schema 
@@ -38,61 +42,61 @@ mongoose.connect("mongodb://localhost/articlesdb", { useNewUrlParser: true });
 const Article = require("./models/articles");
 const Note = require("./models/notes");
 
-axios.get("https://medium.com/topic/technology").then(function(response) {
+axios.get("https://medium.com/topic/technology").then(function (response) {
 
-  var $ = cheerio.load(response.data);
-  var results = [];
+    var $ = cheerio.load(response.data);
+    var results = [];
 
-  $("h3").each(function(i, element) {
-    var title = $(element).text();
-    var summary = $(element).children("p").text();
-    var link = $(element).find("a").attr("href");
+    $("h3").each(function (i, element) {
+        var title = $(element).text();
+        var summary = $(element).children("p").text();
+        var link = $(element).find("a").attr("href");
 
-  
-    results.push({
-      title: title,
-      summary:summary,
-      link: link
+
+        results.push({
+            title: title,
+            summary: summary,
+            link: link
+        });
     });
-  });
-  console.log(results);
+    console.log(results);
 });
 
 // Routes
 // =============================================================
 // Main page
-app.get("/", (req, res) =>{
+app.get("/", (req, res) => {
     res.render("index");
-  });
+});
 
 // Scrape + add data to db https://medium.com/topic/technology
-app.get("/scrape",(req, res) => {
-axios.get("https://medium.com/topic/technology").then(function(response) {
+app.get("/scrape", (req, res) => {
+    axios.get("https://medium.com/topic/technology").then(function (response) {
 
-  var $ = cheerio.load(response.data);
-  var results = [];
+        var $ = cheerio.load(response.data);
+        var results = [];
 
-  $("h3").each(function(i, element) {
-    var title = $(element).text();
-    var link = $(element).find("a").attr("href");
+        $("h3").each(function (i, element) {
+            var title = $(element).text();
+            var link = $(element).find("a").attr("href");
 
-  
-    results.push({
-      title: title,
-      link: link
-    });
-  });
-  console.log(results);
-})
+
+            results.push({
+                title: title,
+                link: link
+            });
+        });
+        console.log(results);
+    })
 });
 
 // GET all saved articles
-app.get("/saved", function(req, res){
+app.get("/saved", function (req, res) {
     res.render("saved")
 })
 
 // Seeing if Port is listening
 // =============================================================
-app.listen(PORT, function() {
+app.listen(PORT, function () {
     console.log('http://localhost' + PORT);
 });
