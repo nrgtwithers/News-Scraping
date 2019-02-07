@@ -19,7 +19,7 @@ Check out the heroku deployed app [here]().
 
 #### Tasks to complete:
 1. Complete connections to Mongoose DB
-1. Create overall layout to Frontend
+1. ~~Create overall layout to Frontend~~
 1. Create routes / scraping
 1. Test/Debug
 1. Heroku deployment

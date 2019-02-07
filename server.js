@@ -1,15 +1,15 @@
 // Dependencies
-var express = require("express");
-var mongoose = require("mongoose");
-var logger = require("morgan");
-var axios = require("axios");
-var cheerio = require("cheerio");
+const express = require("express");
+const mongoose = require("mongoose");
+const logger = require("morgan");
+const axios = require("axios");
+const cheerio = require("cheerio");
 
-var app = express();
+const app = express();
 
 // Starting our Express app
 // =============================================================
-var PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
@@ -23,7 +23,7 @@ app.use(express.static("public"));
 
 // Sets up Handlebars
 // =============================================================
-var exphbs = require("express-handlebars");
+const exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
@@ -35,18 +35,58 @@ mongoose.connect("mongodb://localhost/articlesdb", { useNewUrlParser: true });
 
 // Schema 
 // =============================================================
-// var User = require("./userModel.js");
-// var User = require("./userModel.js");
+const Article = require("./models/articles");
+const Note = require("./models/notes");
+
+axios.get("https://medium.com/topic/technology").then(function(response) {
+
+  var $ = cheerio.load(response.data);
+  var results = [];
+
+  $("h3").each(function(i, element) {
+    var title = $(element).text();
+    var summary = $(element).children("p").text();
+    var link = $(element).find("a").attr("href");
+
+  
+    results.push({
+      title: title,
+      summary:summary,
+      link: link
+    });
+  });
+  console.log(results);
+});
 
 // Routes
 // =============================================================
 // Main page
-app.get("/", function(req, res) {
+app.get("/", (req, res) =>{
     res.render("index");
   });
-// Scrape + add data to db https://www.nytimes.com/
-// GET all articles
 
+// Scrape + add data to db https://medium.com/topic/technology
+app.get("/scrape",(req, res) => {
+axios.get("https://medium.com/topic/technology").then(function(response) {
+
+  var $ = cheerio.load(response.data);
+  var results = [];
+
+  $("h3").each(function(i, element) {
+    var title = $(element).text();
+    var link = $(element).find("a").attr("href");
+
+  
+    results.push({
+      title: title,
+      link: link
+    });
+  });
+  console.log(results);
+})
+});
+
+// GET all saved articles
 app.get("/saved", function(req, res){
     res.render("saved")
 })
