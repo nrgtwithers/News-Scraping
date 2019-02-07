@@ -22,4 +22,4 @@ Check out the heroku deployed app [here]().
 1. ~~Create overall layout to Frontend~~
 1. Create routes / scraping
 1. Test/Debug
-1. Heroku deployment
+1. ~~Heroku deployment~~
