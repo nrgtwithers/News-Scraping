@@ -1,13 +1,23 @@
+// Test connection
 console.log("hi")
 
-$.getJSON("/getarticles", (data)=>{
+// Display the articles information on the page && with limit of 5
+$.getJSON("/getarticles", (data) => {
     for (var i = 0; i < 4; i++) {
-        // Display the apropos information on the page
-        $(".card").append("<div class="+"card-body"+">"+"<p data-id='" + data[i]._id + "'>" + "<h2>" +data[i].title + "</h2>" + "<br />"+ data[i].summary +"<br />" + data[i].link + "</p></div> <hr>"
-        // "<button class="btn btn-dark" type="button">" + Save Article + "</button>");
-        )}
+        // Display the articles information on the page // with limit of 5
+        $(".card").append("<div class=" + "card-body" + ">" + "<p data-id='" + data[i]._id + "'>" + "<h2>" + data[i].title + "</h2>" + "<br />" + data[i].summary + "<br/>" + "<a href="+data[i].link + ">Click here to read</a></p></div>")
+        $(".card").append(`<button id="${data[i]._id}" class="btn btn-dark" type="button">Save Article</button> <hr>`);
+    }
 })
 
-{/* <h2>Title</h2>
-        <p>This is some text within a card body.</p>
-        <button class="btn btn-dark" type="button">Save Article</button> */}
+// $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+
+// Initiates scrape
+$("#scrape").on("click", function(){
+	$.ajax({
+		method: "GET",
+		url: "/scrape",
+	}).done(function(data){
+		console.log(data)
+	})
+});

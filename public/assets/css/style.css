@@ -39,10 +39,27 @@ a.nav-link{
 
 .card>hr{
     border-color:white;
-    border-width: 5px;
+    border-width: 10px;
 }
 
 .card-body{
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+button.btn.btn-dark{
+    width: 100px;
+    margin: auto;
+}
+
+a{
+    color: white !important;
+}
+
+a:hover{
+    color: black !important;
+}
+
+a.navbar-brand{
+    color: black !important;
 }

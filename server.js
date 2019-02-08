@@ -36,32 +36,11 @@ mongoose.connect(MONGODB_URI);
 mongoose.Promise = Promise;
 
 // mongoose.connect("mongodb://localhost/articlesdb", { useNewUrlParser: true });
-// https://medium.com/topic/technology
 
 // Schema 
 // =============================================================
 const Article = require("./models/articles");
 const Note = require("./models/notes");
-
-// axios.get("https://medium.com/topic/technology").then(function (response) {
-
-//     var $ = cheerio.load(response.data);
-//     var results = [];
-
-//     $("div.dp.dq").each(function (i, element) {
-//         var title = $(element).children("h3").text();
-//         var summary = $(element).children("div.dv.d").children("p").children("a").text();
-//         var link = $(element).find("a").attr("href");
-
-
-//         results.push({
-//             title: title,
-//             summary: summary,
-//             link: link
-//         });
-//     });
-//     console.log(results);
-// });
 
 // Routes
 // =============================================================
@@ -109,6 +88,19 @@ app.get("/scrape", (req, res) => {
         })
     
     });
+});
+
+app.get("/articles/:id", function(req,res){
+	Article.findOne({ "_id": req.params.id})
+	.populate("note")
+	.exec(function(error, doc){
+		if(error){
+			console.log(error);
+		}
+		else{
+			res.json(doc);
+		}
+	});
 });
 
 // GET all saved articles
