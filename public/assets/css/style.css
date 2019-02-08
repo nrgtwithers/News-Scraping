@@ -36,3 +36,13 @@ a.nav-link{
     color: black !important;   
     background-color: grey !important;
 }
+
+.card>hr{
+    border-color:white;
+    border-width: 5px;
+}
+
+.card-body{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
