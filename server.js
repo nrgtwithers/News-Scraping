@@ -35,8 +35,6 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines
 mongoose.connect(MONGODB_URI);
 mongoose.Promise = Promise;
 
-// mongoose.connect("mongodb://localhost/articlesdb", { useNewUrlParser: true });
-
 // Schema 
 // =============================================================
 const Article = require("./models/articles");
@@ -49,10 +47,10 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
-app.get("/getarticles", (req,res)=>{
-    Article.find({}, (err,result)=> {
+app.get("/getarticles", (req, res) => {
+    Article.find({}, (err, result) => {
         res.json(result);
-        })
+    })
 })
 
 // Scrape + add data to db https://medium.com/topic/technology
@@ -61,55 +59,66 @@ app.get("/scrape", (req, res) => {
 
         var $ = cheerio.load(response.data);
         var results = [];
-    
+
         $("div.dp.dq").each(function (i, element) {
             var title = $(element).children("h3").text();
             var summary = $(element).children("div.dv.d").children("p").children("a").text();
             var link = $(element).find("a").attr("href");
-            if (title !== "" && summary !== "" && link !== ""){
+            if (title !== "" && summary !== "" && link !== "") {
                 results.push({
                     title: title,
                     summary: summary,
                     link: link
                 });
             }
-    
+
         });
         console.log(results);
-        Article.remove({}, (err)=>{
+        Article.remove({}, (err) => {
             console.log(err)
         })
-        Article.create(results, (err,data)=>{
-            if(err){
+        Article.create(results, (err, data) => {
+            if (err) {
                 console.log(err)
-            } else{
+            } else {
                 console.log(data)
             }
         })
-    
+
     });
 });
-
-app.get("/articles/:id", function(req,res){
-	Article.findOne({ "_id": req.params.id})
-	.populate("note")
-	.exec(function(error, doc){
-		if(error){
-			console.log(error);
-		}
-		else{
-			res.json(doc);
-		}
-	});
+// Route for grabbing a specific Article by id, populate it with it's note
+app.get("/articles/:id", (req, res) => {
+    Article.findOne({ "_id": req.params.id })
+        .populate("note")
+        .exec(function (error, doc) {
+            if (error) {
+                console.log(error);
+            }
+            else {
+                res.json(doc);
+            }
+        });
 });
 
-// GET all saved articles
-app.get("/saved", function (req, res) {
+// route to all saved articles
+app.get("/saved", (req, res)=> {
     res.render("saved")
 })
+// render user saved
+app.get("/user-saved", (req, res) => {
+    Article.find({ "_id": req.params.id }, { "saved": true})
+    .then(function(Article) {
+        res.json(Article);
+      })
+      .catch(function(err) {
+        res.json(err);
+      });
+})
+
 
 // Seeing if Port is listening
 // =============================================================
-app.listen(PORT, function () {
+app.listen(PORT, ()=> {
     console.log('http://localhost' + PORT);
 });
