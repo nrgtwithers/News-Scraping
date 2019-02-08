@@ -32,7 +32,7 @@ app.set("view engine", "handlebars");
 // =============================================================
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect("mongodb://heroku_w945ttpn:odh1ki96jaer670hj5q3o9eoeu@ds225375.mlab.com:25375/heroku_w945ttpn");
 mongoose.Promise = Promise;
 
 // Schema 
